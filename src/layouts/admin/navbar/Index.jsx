@@ -6,18 +6,18 @@ import {AdminContext} from "../../../context/adminLayoutContext";
 const Index = () => {
     const {showSidebar} = useContext(AdminContext)
 
-  return (
-    <nav className={`navbar fixed-top navbar-dark top_navbar py-0 px-5 ${showSidebar ? "with_sidebar" : null}`}>
-      <div className="container-fluid h-100 pe-0">
+    return (
+        <nav className={`navbar fixed-top navbar-dark top_navbar py-0 ${showSidebar ? "with_sidebar" : null}`}>
+            <div className="container-fluid h-100 pe-0">
 
-        <Rightcontent/>
+                <Rightcontent/>
 
-        <Leftcontent/>
+                <Leftcontent/>
 
 
-      </div>
-    </nav>
-  );
+            </div>
+        </nav>
+    );
 };
 
 export default Index;

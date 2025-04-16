@@ -32,7 +32,7 @@ const Comments = () => {
                 <tbody>
                     <tr>
                         <td>1</td>
-                        <td>دانیال مشتاقی</td>
+                        <td>قاسم بساکی</td>
                         <td>نظر</td>
                         <td>محصول فلان</td>
                         <td>قسمتی از متن نظر برای این محصول مثلا 100 کارکتر</td>
@@ -42,7 +42,7 @@ const Comments = () => {
                                 <input className="form-check-input pointer mx-3" type="checkbox" id="flexSwitchCheckDefault" />
                             </div>
                         </td>
-                        <td>1403/10/12</td>
+                        <td>1400/10/12</td>
                         <td>
                             <i className="fas fa-times text-danger mx-1 hoverable_text pointer has_tooltip" title="حذف نظر" data-bs-toggle="tooltip" data-bs-placement="top"></i>
                         </td>

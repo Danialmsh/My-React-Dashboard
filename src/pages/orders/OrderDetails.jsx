@@ -12,7 +12,7 @@ const OrderDetails = () => {
                 <div className="container">
                     <div className="row my-1 justify-content-center">
                         <div className="col-12 col-md-4 col-lg-2 my-1">
-                            <input type="text" className="form-control" value="دانیال مشتاقی" disabled />
+                            <input type="text" className="form-control" value="قاسم بساکی" disabled />
                         </div>
                         <div className="col-12 col-md-4 col-lg-2 my-1">
                             <input type="text" className="form-control" value="تاریخ پرداخت" disabled />
