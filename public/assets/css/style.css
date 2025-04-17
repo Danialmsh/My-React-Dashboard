@@ -297,6 +297,7 @@ td , th {
     display: flex;
     align-items: center;
     cursor: pointer;
+    /*border-bottom: 1px solid #ced4da;*/
 }
 
 #sidebar_section .mini_sidebar .siebar_items:not(:first-child):hover{
@@ -589,16 +590,21 @@ td , th {
 }
 @media(max-width:768px){
 
-    #sidebar_section{
-        display: none;
+    #sidebar_section {
         position: fixed;
         z-index: 1000 !important;
         height: calc(100vh - 70px);
-        width:190px;
         margin-top: 70px;
-        right: 20px;
+        right: 0;
+        width: 0;
+        overflow: hidden;
+        transition: width 0.35s ease;
     }
 
+    /* وقتی باید نمایش داده بشه */
+    #sidebar_section.d-flex {
+        width: 190px;
+    }
     .navbar.fixed-top{
         z-index: 1000 !important;
         position: fixed;

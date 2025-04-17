@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect} from "react";
 import {AdminContext} from "../../../context/adminLayoutContext";
 import SidebarGroupTitle from "./SidebarGroupTitle";
 import SidebarItem from "./SidebarItem";
@@ -8,10 +8,8 @@ const Index = () => {
     const {showSidebar} = useContext(AdminContext)
     const {ToggleShowSidebar} = useContext(AdminContext)
 
-
-
     return (
-    <section id="sidebar_section" className={`${ToggleShowSidebar ? "d-flex" : null}`}>
+        <section id="sidebar_section" className={`${ToggleShowSidebar ? "d-flex" : ""}`}>
             <div className={`mini_sidebar collapsedd h-100 ${showSidebar ? "expanded" : null}  ${ToggleShowSidebar ? "expanded" : null}`}>
                 <ToggleSideBarButton/>
                 <span className='pooch'></span>
