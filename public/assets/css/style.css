@@ -300,11 +300,11 @@ td , th {
     /*border-bottom: 1px solid #ced4da;*/
 }
 
-#sidebar_section .mini_sidebar .siebar_items:not(:first-child):hover{
+#sidebar_section .mini_sidebar .siebar_items:hover{
     background-color: rgb(85, 84, 84);
 }
 
-#sidebar_section .mini_sidebar .siebar_items:not(:first-child){
+#sidebar_section .mini_sidebar .siebar_items{
     justify-content: right;
 }
 
