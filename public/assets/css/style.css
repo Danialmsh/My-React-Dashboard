@@ -301,7 +301,11 @@ td , th {
 }
 
 #sidebar_section .mini_sidebar .siebar_items:hover{
+<<<<<<< HEAD
     background-color: rgb(85, 84, 84);
+=======
+    background-color: rgb(103, 158, 248);
+>>>>>>> b324e3d (29-7-2025)
 }
 
 #sidebar_section .mini_sidebar .siebar_items{

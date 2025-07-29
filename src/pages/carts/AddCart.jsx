@@ -1,15 +1,15 @@
-import { ErrorMessage, Field, Form, Formik } from 'formik';
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useOutletContext } from 'react-router-dom';
+import {ErrorMessage, Field, Form, Formik} from 'formik';
+import React, {useEffect, useState} from 'react';
+import {useLocation, useNavigate, useOutletContext} from 'react-router-dom';
 import SelectSearch from 'react-select-search';
 import ModalsContainer from '../../components/ModalsContainer';
-import { initialValues, onSubmit, validationSchema } from './core';
+import {initialValues, onSubmit, validationSchema} from './core';
 import 'react-select-search/style.css'
-import { getAllProductTitlesService, getOneProductService } from '../../services/products';
+import {getAllProductTitlesService, getOneProductService} from '../../services/products';
 import FormikError from '../../components/form/FormikError';
-import { addNewCartService, editCartService, getSinglrCartService } from '../../services/carts';
-import { Alert } from '../../utils/alerts';
-import { numberWithCommas } from '../../utils/numbers';
+import {addNewCartService, editCartService, getSinglrCartService} from '../../services/carts';
+import {Alert} from '../../utils/alerts';
+import {numberWithCommas} from '../../utils/numbers';
 
 const AddCart = () => {
     const navigate = useNavigate()
@@ -25,25 +25,27 @@ const AddCart = () => {
     const [reInitialValues, setReInitialValues] = useState(null)
     const [isSubmitting, setIsSubmitting] = useState(false)
 
-    const handleGetAllProductTitles = async ()=>{
+    const handleGetAllProductTitles = async () => {
         const res = await getAllProductTitlesService();
-        res.status === 200 &&  setAllProducts(res.data.data.map(p=>{return{name:p.title, value:p.id}}));
+        res.status === 200 && setAllProducts(res.data.data.map(p => {
+            return {name: p.title, value: p.id}
+        }));
     }
 
-    const handleChangeSelectedProduct = async (e, formik)=>{
+    const handleChangeSelectedProduct = async (e, formik) => {
         formik.setFieldValue('product_id', e)
         const res = await getOneProductService(e)
         if (res.status === 200) {
             const product = res.data.data
             setCurrentProduct(product)
-            setColors(product.colors.map(c=>({name:c.title, value:c.id})))
-            setGuarantees(product.guarantees.map(g=>({name:g.title, value:g.id})))
+            setColors(product.colors.map(c => ({name: c.title, value: c.id})))
+            setGuarantees(product.guarantees.map(g => ({name: g.title, value: g.id})))
         }
     }
 
-    const handleConfirmAddCart = async (formik)=>{
+    const handleConfirmAddCart = async (formik) => {
         setIsSubmitting(true)
-        let products =[]
+        let products = []
         for (const p of selectedProductsInfo) {
             products.push({
                 product_id: p.product.id,
@@ -58,7 +60,7 @@ const AddCart = () => {
                 user_id: formik.values.user_id,
                 products
             })
-        }else{
+        } else {
             res = await addNewCartService({
                 user_id: formik.values.user_id,
                 products
@@ -73,11 +75,11 @@ const AddCart = () => {
         setIsSubmitting(false)
     }
 
-    const handleDeleteProduct = (id)=>{
-        setSelectedProductsInfo(old=>old.filter(o=>o.id != id))
+    const handleDeleteProduct = (id) => {
+        setSelectedProductsInfo(old => old.filter(o => o.id != id))
     }
 
-    const handleGetCartToEditInfo = async ()=>{
+    const handleGetCartToEditInfo = async () => {
         const res = await getSinglrCartService(cartToEditId);
         if (res.status === 200) {
             let products = []
@@ -95,81 +97,92 @@ const AddCart = () => {
             setSelectedProductsInfo(products)
         }
     }
-    
-    useEffect(()=>{
+
+    useEffect(() => {
         handleGetAllProductTitles()
         cartToEditId && handleGetCartToEditInfo()
-    },[])
+    }, [])
 
     return (
         <>
             <ModalsContainer
-            className="show d-block"
-            id={"edit_cart_modal"}
-            title={cartToEditId ? "جزئیات و ویرایش سبد خرید" :"افزودن سبد خرید"}
-            fullScreen={true}
-            closeFunction={()=>navigate(-1)}
+                className="show d-block"
+                id={"edit_cart_modal"}
+                title={cartToEditId ? "جزئیات و ویرایش سبد خرید" : "افزودن سبد خرید"}
+                fullScreen={true}
+                closeFunction={() => navigate(-1)}
             >
                 <div className="container">
                     <Formik
-                    initialValues={reInitialValues || initialValues}
-                    onSubmit={(values, actions)=>onSubmit(values, actions, setSelectedProductsInfo, currentProduct)}
-                    validationSchema={validationSchema}
-                    enableReinitialize
+                        initialValues={reInitialValues || initialValues}
+                        onSubmit={(values, actions) => onSubmit(values, actions, setSelectedProductsInfo, currentProduct)}
+                        validationSchema={validationSchema}
+                        enableReinitialize
                     >
                         {
-                            formik=>{
-                                return(
+                            formik => {
+                                return (
                                     <Form>
                                         <div className="row my-3 justify-content-center">
                                             <div className="col-12 col-md-4 col-lg-2 my-1">
-                                                <Field type="text" name="user_id" className="form-control" placeholder="آی دی مشتری"/>
+                                                <Field type="text" name="user_id" className="form-control"
+                                                       placeholder="آی دی مشتری"/>
                                                 <br/>
                                                 <ErrorMessage name='user_id' component={FormikError}/>
                                             </div>
 
                                             <div className="col-12 col-md-4 col-lg-3 my-1">
-                                                <SelectSearch options={allProducts} search={true} placeholder="محصول" 
-                                                onChange={(e)=>handleChangeSelectedProduct(e, formik)}/>
+                                                <SelectSearch options={allProducts} search={true} placeholder="محصول"
+                                                              onChange={(e) => handleChangeSelectedProduct(e, formik)}/>
                                                 <br/>
-                                                <ErrorMessage name='product_id'component={FormikError}/>
+                                                <ErrorMessage name='product_id' component={FormikError}/>
                                             </div>
 
                                             <div className="col-12 col-md-4 col-lg-2 my-1">
-                                                <SelectSearch options={colors} placeholder="رنگ" onChange={(e)=>formik.setFieldValue('color_id', e)}/>
+                                                <SelectSearch options={colors} placeholder="رنگ"
+                                                              onChange={(e) => formik.setFieldValue('color_id', e)}/>
                                                 <br/>
-                                                <ErrorMessage name='color_id'component={FormikError}/>
+                                                <ErrorMessage name='color_id' component={FormikError}/>
                                             </div>
 
                                             <div className="col-12 col-md-4 col-lg-2 my-1">
-                                                <SelectSearch options={guarantees} placeholder="گارانتی" onChange={(e)=>formik.setFieldValue('guarantee_id', e)}/>
+                                                <SelectSearch options={guarantees} placeholder="گارانتی"
+                                                              onChange={(e) => formik.setFieldValue('guarantee_id', e)}/>
                                                 <br/>
-                                                <ErrorMessage name='guarantee_id'component={FormikError}/>
+                                                <ErrorMessage name='guarantee_id' component={FormikError}/>
                                             </div>
 
                                             <div className="col-12 col-md-4 col-lg-2 my-1">
-                                                <Field type="number" name="count" className="form-control" placeholder="تعداد"/>
+                                                <Field type="number" name="count" className="form-control"
+                                                       placeholder="تعداد"/>
                                                 <br/>
-                                                <ErrorMessage name='count'component={FormikError}/>
+                                                <ErrorMessage name='count' component={FormikError}/>
                                             </div>
 
-                                            <div className="col-4 col-lg-1 d-flex justify-content-center align-items-center my-1">
-                                                <i className="fas fa-check text-light bg-success rounded-circle p-2 mx-1 hoverable_text hoverable pointer has_tooltip hoverable_text" title="ثبت فرم" data-bs-toggle="tooltip" data-bs-placement="top" onClick={()=>formik.submitForm()}></i>
+                                            <div
+                                                className="col-4 col-lg-1 d-flex justify-content-center align-items-center my-1">
+                                                <i className="fas fa-check text-light bg-success rounded-circle p-2 mx-1 hoverable_text hoverable pointer has_tooltip hoverable_text"
+                                                   title="ثبت فرم" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                   onClick={() => formik.submitForm()}></i>
                                             </div>
-                                            <hr className="mt-3" />
+                                            <hr className="mt-3"/>
                                         </div>
                                         <div className="row justify-content-center">
                                             {
-                                                selectedProductsInfo.map(product=>(
+                                                selectedProductsInfo.map(product => (
                                                     <div className="col-12 col-md-6 col-lg-4" key={product.id}>
                                                         <div className="input-group my-3 dir_ltr">
-                                                            <span className="input-group-text text-end font_08 w-100 text_truncate">
-                                                                <i className="fas fa-times text-danger hoverable_text pointer mx-1 has_tooltip" title="حذف محصول از سبد" data-bs-placement="top" onClick={()=>handleDeleteProduct(product.id)}></i>
+                                                            <span
+                                                                className="input-group-text text-end font_08 w-100 text_truncate">
+                                                                <i className="fas fa-times text-danger hoverable_text pointer mx-1 has_tooltip"
+                                                                   title="حذف محصول از سبد" data-bs-placement="top"
+                                                                   onClick={() => handleDeleteProduct(product.id)}></i>
                                                                 {product.product.title}
                                                                 (قیمت واحد: {numberWithCommas(product.product.price)})
                                                                 (گارانتی: {product.guarantee?.title})
                                                                 ({product.count} عدد)
-                                                                <i className="fas fa-circle mx-1" style={{ color: product.color?.code }}></i>
+                                                                <i className="fas fa-circle mx-1"
+                                                                   style={{color: product.color?.code}}></i>
                                                             </span>
                                                         </div>
                                                     </div>
@@ -177,20 +190,26 @@ const AddCart = () => {
                                             }
                                             <div className='col-12'></div>
                                             {selectedProductsInfo.length > 0 ? (
-                                                    <>
-                                                        <div className="col-6">
-                                                            <div className="input-group my-3 dir_ltr">
-                                                                <span className="input-group-text justify-content-center w-75" >{numberWithCommas(selectedProductsInfo.map(p=>p.count*p.product.price).reduce((a, b)=>a+b))}</span>
-                                                                <span className="input-group-text w-25 text-center"> جمع کل </span>
-                                                            </div>
+                                                <>
+                                                    <div className="col-6">
+                                                        <div className="input-group my-3 dir_ltr">
+                                                                <span
+                                                                    className="input-group-text justify-content-center w-75">
+                                                                    {numberWithCommas(selectedProductsInfo.map(p => p.count * p.product.price).reduce((a, b) => a + b))}
+                                                                </span>
+                                                            <span
+                                                                className="input-group-text w-25 text-center"> جمع کل </span>
                                                         </div>
-                                                        <div className="btn_box text-center col-12 col-md-6 col-lg-8 mt-4">
-                                                            <button type='button' className="btn btn-primary" onClick={()=>handleConfirmAddCart(formik)} disabled={isSubmitting}>
-                                                                {isSubmitting ? "صبر کنید..." :"ذخیره"}
-                                                            </button>
-                                                        </div>
-                                                    </>
-                                                ) : (<h6 className='text-center text-primary'>محصولات خود را مشخص کنید</h6>)
+                                                    </div>
+                                                    <div className="btn_box text-center col-12 col-md-6 col-lg-8 mt-4">
+                                                        <button type='button' className="btn btn-primary"
+                                                                onClick={() => handleConfirmAddCart(formik)}
+                                                                disabled={isSubmitting}>
+                                                            {isSubmitting ? "صبر کنید..." : "ذخیره"}
+                                                        </button>
+                                                    </div>
+                                                </>
+                                            ) : (<h6 className='text-center text-primary'>محصولات خود را مشخص کنید</h6>)
                                             }
                                         </div>
                                     </Form>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {memo, useEffect, useState} from "react";
 import SpinnerLoad from "./SpinnerLoad";
 const PaginatedTable = ({
   children,
@@ -130,4 +130,4 @@ const PaginatedTable = ({
   );
 };
 
-export default PaginatedTable;
+export default memo(PaginatedTable);

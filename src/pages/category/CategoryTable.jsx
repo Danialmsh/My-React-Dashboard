@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {memo, useEffect, useState} from "react";
 import { Outlet, useParams } from "react-router-dom";
 import PaginatedTable from "../../components/PaginatedTable";
 import { useHasPermission } from "../../hook/permissionsHook";
@@ -47,7 +47,7 @@ const Categorytable = () => {
 
   useEffect(() => {
     handleGetCategories();
-  }, [params, forceRender]);
+  }, [params.categoryId, forceRender]);
 
   const dataInfo = [
     { field: "id", title: "#" },
@@ -92,4 +92,4 @@ const Categorytable = () => {
   );
 };
 
-export default Categorytable;
+export default memo(Categorytable);
